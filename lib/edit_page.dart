@@ -16,7 +16,7 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
-  final _myBox = Hive.box('toDoDataBase');
+  final _myBox = Hive.box('userDataBase');
   @override
   Widget build(BuildContext context) {
     // DateTime startTimeTemp = TodoListScreen.listToDo[widget.index].startDate;

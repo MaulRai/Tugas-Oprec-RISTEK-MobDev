@@ -46,6 +46,7 @@ class TodoListScreen extends StatefulWidget {
 class _TodoListScreenState extends State<TodoListScreen> {
   int currentIndex = 0;
   final _myBox = Hive.box('userDataBase');
+  final _myProfileBox = Hive.box('profileDataBase');
   int getDayRemaining(int index) {
     return _myBox.getAt(index).endDate.difference(DateTime.now()).inDays;
   }
@@ -100,7 +101,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
               child: Column(
                 children: [
                   Text(
-                    "Welcome, ${_myBox.get('userName') == "" ? "User" : _myBox.get('userName') ?? "User"}!",
+                    "Welcome, ${_myProfileBox.get('userName') == "" ? "User" : _myProfileBox.get('userName') ?? "User"}!",
                     style: TextStyle(
                       fontFamily: 'Anta',
                       fontWeight: FontWeight.bold,

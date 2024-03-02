@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/cupertino.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -18,7 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime(1900),
-            lastDate: DateTime(2024))
+            lastDate: DateTime(2050))
         .then((value) {
       setState(() {
         _myProfileBox.put("birthDate", DateFormat('EEE d MMM, yyyy').format(value!).toString());
@@ -162,8 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
               onPressed: _showBirthdate,
               child: Text(
-                // _myProfileBox.get('birthDate') ?? "Choose Date",
-                "Choose Date",
+                _myProfileBox.get('birthDate') ?? "Choose Date",
               ),
             ),
             SizedBox(height: 15),
