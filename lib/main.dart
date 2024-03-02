@@ -10,14 +10,13 @@ import 'datatodo.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:path_provider/path_provider.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   Directory directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(DataToDoAdapter());
-  
+
   var box = await Hive.openBox('userDataBase');
 
   // box1.deleteFromDisk();
@@ -39,10 +38,6 @@ class MyApp extends StatelessWidget {
 }
 
 class TodoListScreen extends StatefulWidget {
-  // static List<DataToDo> listToDo = Hive.box('userDataBase').isEmpty
-  //     ? <DataToDo>[]
-  //     : Hive.box('userDataBase').values.cast<DataToDo>().toList();
-
   @override
   _TodoListScreenState createState() => _TodoListScreenState();
 }
@@ -134,12 +129,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
                               builder: (BuildContext context) => TaskPage(
                                 onTaskAdded: () {
                                   setState(() {});
-                                  // void _saveListToDo() {
-                                  //   _myBox.put(
-                                  //       "listToDo", TodoListScreen.listToDo);
-                                  // }
-
-                                  // ; // Trigger a rebuild of TodoListScreen
                                 },
                               ),
                             ),
@@ -165,9 +154,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                               SlidableAction(
                                 onPressed: (context) {
                                   setState(() {
-                                    // _myBox.delete(index);
                                     _myBox.deleteAt(index);
-                                    // TodoListScreen.listToDo.removeAt(index);
                                   });
                                 },
                                 borderRadius: BorderRadius.only(
@@ -180,14 +167,14 @@ class _TodoListScreenState extends State<TodoListScreen> {
                           ),
                           child: Card(
                             // color: _myBox.getAt(index).isPriority
-                            color: boxList[index].isPriority
+                            color: _myBox.getAt(index).isPriority
                                 ? Colors.purple.shade200
                                 : null,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(
                                   15.0), // Set border radius
                               // side: _myBox.getAt(index).isPriority
-                              side: boxList[index].isPriority
+                              side: _myBox.getAt(index).isPriority
                                   ? BorderSide(
                                       color: Colors.purple.shade500, width: 4.0)
                                   : BorderSide(
@@ -200,36 +187,31 @@ class _TodoListScreenState extends State<TodoListScreen> {
                             child: InkWell(
                               onTap: () async {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          EditPage(
-                                        index: index,
-                                        onTaskAdded: () {
-                                          setState(
-                                              () {}); // Trigger a rebuild of TodoListScreen
-                                        },
-                                      ),
-                                    ));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) => EditPage(
+                                      index: index,
+                                      onTaskAdded: () {
+                                        setState(
+                                            () {}); // Trigger a rebuild of TodoListScreen
+                                      },
+                                    ),
+                                  ),
+                                );
                               },
                               child: ListTile(
                                 title: Text(
-                                  // _myBox.getAt(index).todos,
-                                  boxList[index].todos,
+                                  _myBox.getAt(index).todos,
                                   style: TextStyle(
-                                      // decoration: _myBox.getAt(index).isCompleted
-                                      decoration: boxList[index].isCompleted
+                                      decoration: _myBox.getAt(index).isCompleted
                                           ? TextDecoration.lineThrough
                                           : null,
                                       fontFamily: 'Anta',
                                       fontSize: 18,
-                                      // color: _myBox.getAt(index).isCompleted
-                                      color: boxList[index].isCompleted
+                                      color: _myBox.getAt(index).isCompleted
                                           ? Colors.deepPurple
                                           : Colors.black),
                                 ),
-                                // subtitle: Text(DateTime.parse(_myBox
-                                //             .getAt(index)
                                 subtitle: Text(getDayRemaining(index) == 0
                                     ? "Final day!"
                                     : "${getDayRemaining(index)} day(s) remaining"),
