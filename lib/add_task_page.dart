@@ -1,48 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_learn_the_basics/datatodo.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
-
-@HiveType(typeId: 0)
-class DataToDo extends HiveObject {
-  @HiveField(0)
-  String todos = "";
-
-  @HiveField(1)
-  String startDateFormatted = "";
-
-  @HiveField(2)
-  String endDateFormatted = "";
-
-  @HiveField(3)
-  bool isCompleted = false;
-
-  @HiveField(4)
-  bool isPriority = false;
-
-  @HiveField(5)
-  String desc = "";
-  
-  DataToDo(this.todos, this.startDateFormatted, this.endDateFormatted, this.isCompleted,
-      this.isPriority, this.desc);
-}
-
-// class DataToDo {
-//   String todos = "";
-//   DateTime startDate = DateTime.now();
-//   DateTime endDate = DateTime.now();
-//   bool isCompleted = false;
-//   bool isPriority = false;
-//   String desc = "";
-
-//   DataToDo(this.todos, this.startDate, this.endDate, this.isCompleted,
-//       this.isPriority, this.desc);
-// }
+import 'package:hive/hive.dart';
 
 class TaskPage extends StatefulWidget {
   final VoidCallback onTaskAdded; // Define a callback
-  
+
   const TaskPage({Key? key, required this.onTaskAdded}) : super(key: key);
 
   @override
@@ -50,13 +16,7 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
-  late final List<DataToDo> boxList;
-
-  _TaskPageState() {
-    boxList = Hive.box('toDoDataBase').values.toList().cast<DataToDo>();
-  }
-  
-  // final _myBox = Hive.box('toDoDataBase');
+  final _myBox = Hive.box('userDataBase');
   DateTime? startTime;
   DateTime? endTime;
   String newTodo = "";
@@ -128,8 +88,11 @@ class _TaskPageState extends State<TaskPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 // Text(startTime.toString())
-                Expanded(child: Text("Start:", style: TextStyle(fontFamily: 'Anta'))),
-                Expanded(child: Text("Ends:", style: TextStyle(fontFamily: 'Anta')))
+                Expanded(
+                    child:
+                        Text("Start:", style: TextStyle(fontFamily: 'Anta'))),
+                Expanded(
+                    child: Text("Ends:", style: TextStyle(fontFamily: 'Anta')))
               ],
             ),
             Row(
@@ -137,7 +100,7 @@ class _TaskPageState extends State<TaskPage> {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8,0,8,8),
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                     child: ElevatedButton(
                       onPressed: _showStartDate,
                       style: ElevatedButton.styleFrom(
@@ -156,7 +119,7 @@ class _TaskPageState extends State<TaskPage> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8,0,8,8),
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                     child: ElevatedButton(
                       onPressed: _showEndDate,
                       style: ElevatedButton.styleFrom(
@@ -178,7 +141,8 @@ class _TaskPageState extends State<TaskPage> {
             const Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Expanded(child: Text("Title", style: TextStyle(fontFamily: 'Anta'))),
+                Expanded(
+                    child: Text("Title", style: TextStyle(fontFamily: 'Anta'))),
               ],
             ),
             TextField(
@@ -191,7 +155,9 @@ class _TaskPageState extends State<TaskPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Expanded(child: Text("Category", style: TextStyle(fontFamily: 'Anta'))),
+                  Expanded(
+                      child: Text("Category",
+                          style: TextStyle(fontFamily: 'Anta'))),
                 ],
               ),
             ),
@@ -199,32 +165,36 @@ class _TaskPageState extends State<TaskPage> {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8,0,8,8),
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                     child: ElevatedButton(
                       onPressed: () => setState(() => isPriority = true),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            isPriority ? Colors.purpleAccent : Colors.transparent,
+                        backgroundColor: isPriority
+                            ? Colors.purpleAccent
+                            : Colors.transparent,
                       ),
                       child: const Text(
                         "Priority Task",
-                        style: TextStyle(color: Colors.white, fontFamily: 'Anta'),
+                        style:
+                            TextStyle(color: Colors.white, fontFamily: 'Anta'),
                       ),
                     ),
                   ),
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8,0,8,0),
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                     child: ElevatedButton(
                       onPressed: () => setState(() => isPriority = false),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            isPriority ? Colors.transparent : Colors.purpleAccent,
+                        backgroundColor: isPriority
+                            ? Colors.transparent
+                            : Colors.purpleAccent,
                       ),
                       child: const Text(
                         "Daily Task",
-                        style: TextStyle(color: Colors.white, fontFamily: 'Anta'),
+                        style:
+                            TextStyle(color: Colors.white, fontFamily: 'Anta'),
                       ),
                     ),
                   ),
@@ -236,7 +206,9 @@ class _TaskPageState extends State<TaskPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Expanded(child: Text("Description", style: TextStyle(fontFamily: 'Anta') )),
+                  Expanded(
+                      child: Text("Description",
+                          style: TextStyle(fontFamily: 'Anta'))),
                 ],
               ),
             ),
@@ -252,8 +224,7 @@ class _TaskPageState extends State<TaskPage> {
                   maxLines: null,
                   placeholder: "Add description",
                   decoration:
-                      BoxDecoration(border: Border.all(color: Colors.grey)
-                          )),
+                      BoxDecoration(border: Border.all(color: Colors.grey))),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 30, 0, 30),
@@ -318,13 +289,10 @@ class _TaskPageState extends State<TaskPage> {
                     );
                   } else {
                     setState(() {
-                      if (newTodo.isNotEmpty) {
-                        boxList.add(DataToDo(newTodo,
-                            DateFormat('EEE d MMM, yyyy').format(startTime!), DateFormat('EEE d MMM, yyyy').format(endTime!), false, isPriority, newDesc));
-                        // _myBox.put('listToDo', TodoListScreen.listToDo);
+                      _myBox.add(DataToDo(newTodo, startTime, endTime, false,
+                          isPriority, newDesc));
+                      widget.onTaskAdded(); // Call the callback function
 
-                        widget.onTaskAdded(); // Call the callback function
-                      }
                       Navigator.pop(context);
                     });
                   }
@@ -336,7 +304,9 @@ class _TaskPageState extends State<TaskPage> {
                 child: const Text(
                   "Create Task",
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w800, fontFamily: 'Anta'),
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                      fontFamily: 'Anta'),
                 ),
               ),
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+// import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 
 
 class EditPage extends StatefulWidget {
@@ -24,8 +24,8 @@ class _EditPageState extends State<EditPage> {
     // String initialToDoTitle = TodoListScreen.listToDo[widget.index].todos;
     // String initialDesc = TodoListScreen.listToDo[widget.index].desc;
     // bool isPriority = TodoListScreen.listToDo[widget.index].isPriority;
-    DateTime startTimeTemp = DateTime.parse(_myBox.get(widget.index).startDate);
-    DateTime endTimeTemp = DateTime.parse(_myBox.get(widget.index).endDate);
+    DateTime startTimeTemp = _myBox.get(widget.index).startDate;
+    DateTime endTimeTemp = _myBox.get(widget.index).endDate;
     String initialToDoTitle = _myBox.get(widget.index).todos;
     String initialDesc = _myBox.get(widget.index).desc;
     bool isPriority = _myBox.get(widget.index).isPriority;
@@ -33,14 +33,13 @@ class _EditPageState extends State<EditPage> {
     void _showStartDate() {
       showDatePicker(
               context: context,
-              initialDate: startTimeTemp,
+              initialDate: _myBox.get(widget.index).startDate,
               firstDate: DateTime(2024),
               lastDate: DateTime(2050))
           .then((value) {
         if (value != null) {
           setState(() {
             startTimeTemp = value;
-            // _myBox.get(widget.index).startDate = value;
             _myBox.get(widget.index).startDate = value;
           });
         }
@@ -151,7 +150,6 @@ class _EditPageState extends State<EditPage> {
             ),
             TextFormField(
               initialValue: initialToDoTitle,
-              // controller: TextEditingControllser(text: initialToDoTitle),
               onChanged: (value) {
                 setState(() {
                   _myBox.get(widget.index).todos = value;
@@ -276,16 +274,6 @@ class _EditPageState extends State<EditPage> {
                     );
                   } else {
                     setState(() {
-                      // TodoListScreen.listToDo[widget.index].todos =
-                      //     initialToDoTitle;
-                      // TodoListScreen.listToDo[widget.index].startDate =
-                      //     startTimeTemp;
-                      // TodoListScreen.listToDo[widget.index].endDate =
-                      //     endTimeTemp;
-                      // TodoListScreen.listToDo[widget.index].isPriority =
-                      //     isPriority;
-                      // TodoListScreen.listToDo[widget.index].desc = initialDesc;
-                      // _myBox.put('listToDo', TodoListScreen.listToDo);
                       widget.onTaskAdded();
                       Navigator.pop(context);
                     });

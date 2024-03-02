@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +7,7 @@ import 'add_task_page.dart';
 import 'edit_page.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'datatodo.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+// import 'package:flutter_learn_the_basics/datatodo.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
@@ -18,6 +18,7 @@ void main() async {
   Hive.registerAdapter(DataToDoAdapter());
 
   var box = await Hive.openBox('userDataBase');
+  var boxP = await Hive.openBox('profileDataBase');
 
   // box1.deleteFromDisk();
   // box2.deleteFromDisk();
@@ -45,8 +46,8 @@ class TodoListScreen extends StatefulWidget {
 class _TodoListScreenState extends State<TodoListScreen> {
   int currentIndex = 0;
   final _myBox = Hive.box('userDataBase');
-  DateTime getDayRemaining(int index) {
-    return _myBox.getAt(index).endDate;
+  int getDayRemaining(int index) {
+    return _myBox.getAt(index).endDate.difference(DateTime.now()).inDays;
   }
 
   @override
@@ -203,9 +204,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                 title: Text(
                                   _myBox.getAt(index).todos,
                                   style: TextStyle(
-                                      decoration: _myBox.getAt(index).isCompleted
-                                          ? TextDecoration.lineThrough
-                                          : null,
+                                      decoration:
+                                          _myBox.getAt(index).isCompleted
+                                              ? TextDecoration.lineThrough
+                                              : null,
                                       fontFamily: 'Anta',
                                       fontSize: 18,
                                       color: _myBox.getAt(index).isCompleted
@@ -223,11 +225,13 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                   children: <Widget>[
                                     Checkbox(
                                         // value: _myBox.getAt(index).isCompleted,
-                                        value: boxList[index].isCompleted,
+                                        value: _myBox.getAt(index).isCompleted,
                                         onChanged: (bool? newValue) {
                                           setState(() {
-                                            boxList[index].isCompleted =
-                                                !boxList[index].isCompleted;
+                                            _myBox.getAt(index).isCompleted =
+                                                !_myBox
+                                                    .getAt(index)
+                                                    .isCompleted;
                                           });
                                         }),
                                   ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -16,12 +16,12 @@ class _ProfilePageState extends State<ProfilePage> {
   void _showBirthdate() {
     showDatePicker(
             context: context,
-            initialDate: _myProfileBox.get("birthDate") == null ?  DateTime.now() : DateTime.parse(_myProfileBox.get("birthDate")),
+            initialDate: DateTime.now(),
             firstDate: DateTime(1900),
-            lastDate: DateTime(DateTime.now().year))
+            lastDate: DateTime(2024))
         .then((value) {
       setState(() {
-        _myProfileBox.put("birthDate", DateFormat('EEE d MMM, yyyy').format(value!));
+        _myProfileBox.put("birthDate", DateFormat('EEE d MMM, yyyy').format(value!).toString());
       });
     });
   }
@@ -113,10 +113,9 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                 child: TextFormField(
-                  // initialValue: _myBox.get('userName') ?? "",
+                  initialValue: _myProfileBox.get('userName') ?? "",
                   onChanged: (value) {
                     _myProfileBox.put("userName", value);
-                    // UserData.userName = value;
                   },
                 ),
               ),
@@ -141,8 +140,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   initialValue:
                       _myProfileBox.get('major') ?? "",
                   onChanged: (value) {
-                    _myProfileBox.get('major').put("major", value);
-                    // UserData.userName = value;
+                    _myProfileBox.put("major", value);
                   },
                 ),
               ),
@@ -164,7 +162,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
               onPressed: _showBirthdate,
               child: Text(
-                _myProfileBox.get('birthDate') ?? "Choose Date",
+                // _myProfileBox.get('birthDate') ?? "Choose Date",
+                "Choose Date",
               ),
             ),
             SizedBox(height: 15),
