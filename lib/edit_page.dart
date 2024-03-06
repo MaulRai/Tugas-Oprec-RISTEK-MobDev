@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-// import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 
 
@@ -24,39 +23,37 @@ class _EditPageState extends State<EditPage> {
     // String initialToDoTitle = TodoListScreen.listToDo[widget.index].todos;
     // String initialDesc = TodoListScreen.listToDo[widget.index].desc;
     // bool isPriority = TodoListScreen.listToDo[widget.index].isPriority;
-    DateTime startTimeTemp = _myBox.get(widget.index).startDate;
-    DateTime endTimeTemp = _myBox.get(widget.index).endDate;
-    String initialToDoTitle = _myBox.get(widget.index).todos;
-    String initialDesc = _myBox.get(widget.index).desc;
-    bool isPriority = _myBox.get(widget.index).isPriority;
+    DateTime startTimeTemp = _myBox.getAt(widget.index).startDate;
+    DateTime endTimeTemp = _myBox.getAt(widget.index).endDate;
+    String initialToDoTitle = _myBox.getAt(widget.index).todos;
+    String initialDesc = _myBox.getAt(widget.index).desc;
+    bool isPriority = _myBox.getAt(widget.index).isPriority;
 
-    void _showStartDate() {
+    void showStartDate() {
       showDatePicker(
               context: context,
-              initialDate: _myBox.get(widget.index).startDate,
+              initialDate: _myBox.getAt(widget.index).startDate,
               firstDate: DateTime(2024),
               lastDate: DateTime(2050))
           .then((value) {
         if (value != null) {
           setState(() {
-            startTimeTemp = value;
-            _myBox.get(widget.index).startDate = value;
+            _myBox.getAt(widget.index).startDate = value;
           });
         }
       });
     }
 
-    void _showEndDate() {
+    void showEndDate() {
       showDatePicker(
               context: context,
-              initialDate: _myBox.get(widget.index).endDate,
+              initialDate: _myBox.getAt(widget.index).endDate,
               firstDate: DateTime(2024),
               lastDate: DateTime(2050))
           .then((value) {
         if (value != null) {
           setState(() {
-            endTimeTemp = value;
-            _myBox.get(widget.index).endDate = value;
+            _myBox.getAt(widget.index).endDate = value;
           });
         }
       });
@@ -95,10 +92,9 @@ class _EditPageState extends State<EditPage> {
         ),
         child: Column(
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                // Text(startTime.toString())
                 Expanded(
                     child: Text("Start", style: TextStyle(fontFamily: 'Anta'))),
                 Expanded(
@@ -112,7 +108,7 @@ class _EditPageState extends State<EditPage> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(8,0,8,8),
                     child: ElevatedButton(
-                      onPressed: _showStartDate,
+                      onPressed: showStartDate,
                       style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white
                                 .withOpacity(0.2)
@@ -128,7 +124,7 @@ class _EditPageState extends State<EditPage> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(8,0,8,8),
                     child: ElevatedButton(
-                      onPressed: _showEndDate,
+                      onPressed: showEndDate,
                       style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white
                                 .withOpacity(0.2)
@@ -152,7 +148,7 @@ class _EditPageState extends State<EditPage> {
               initialValue: initialToDoTitle,
               onChanged: (value) {
                 setState(() {
-                  _myBox.get(widget.index).todos = value;
+                  _myBox.getAt(widget.index).todos = value;
                 });
               },
             ),
@@ -171,7 +167,7 @@ class _EditPageState extends State<EditPage> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(8,0,8,8),
                     child: ElevatedButton(
-                      onPressed: () => setState(() => _myBox.get(widget.index).isPriority = true),
+                      onPressed: () => setState(() => _myBox.getAt(widget.index).isPriority = true),
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
                             isPriority ? Colors.purpleAccent : Colors.transparent,
@@ -187,7 +183,7 @@ class _EditPageState extends State<EditPage> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(8,0,8,8),
                     child: ElevatedButton(
-                      onPressed: () => setState(() => _myBox.get(widget.index).isPriority = false),
+                      onPressed: () => setState(() => _myBox.getAt(widget.index).isPriority = false),
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
                             isPriority ? Colors.transparent : Colors.purpleAccent,
@@ -213,18 +209,17 @@ class _EditPageState extends State<EditPage> {
             Expanded(
               child: TextFormField(
                 textAlignVertical: TextAlignVertical.top,
-                scrollPadding: EdgeInsets.only(bottom: 40),
-                autofocus: true,
+                scrollPadding: const EdgeInsets.only(bottom: 40),
                 controller: null,
                 onChanged: (value) {
                   setState(() {
-                    _myBox.get(widget.index).desc = value;
+                    _myBox.getAt(widget.index).desc = value;
                   });
                 },
                 initialValue: initialDesc,
                 expands: true,
                 maxLines: null,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Add description',
                 ),
@@ -240,15 +235,15 @@ class _EditPageState extends State<EditPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Date invalid"),
-                          content: Text(
+                          title: const Text("Date invalid"),
+                          content: const Text(
                               "End date cannot be the day before today or the start date"),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop(); // Tutup dialog
                               },
-                              child: Text("OK"),
+                              child: const Text("OK"),
                             ),
                           ],
                         );
@@ -259,14 +254,14 @@ class _EditPageState extends State<EditPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Task title input invalid"),
-                          content: Text("Please input the task title"),
+                          title: const Text("Task title input invalid"),
+                          content: const Text("Please input the task title"),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop(); // Tutup dialog
                               },
-                              child: Text("OK"),
+                              child: const Text("OK"),
                             ),
                           ],
                         );

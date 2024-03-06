@@ -1,16 +1,10 @@
-# flutter_learn_the_basics
+ESSAY
 
-A new Flutter project.
+Pertama-tama, sungguh kesempatan yang beruntung, saya dapat mengeksplorasi Flutter dan Dart melatih Mobile Developement lewat tugas OpRec RISTEK ini. Disini saya belajar banyak hal, mulai dari State Widget, akar dari segala aplikasi Flutter pada mobile. Kemudian tentang konsep widget dalam widget dalam widget dan seterusnya, hal ini menarik untuk di coba dan membuat eksperimen pada tiap widget yang unik. Beragam widget baru saya coba dan mencari tahu apa yang membuat spesial dari widget tersebut. Beragam library-library bawaan dari Flutter maupun yang harus di install yang saya gunakan dalam projek ini. Selain itu, permainan UI UX dalam mempercantik visual dan penyajian pengalaman kepada user juga saya pelajari seiring mengerjakan projek ini, logic pada tiap percabangan, efisiensi program, ternyata hal itu memang menjadi daya tarik dari suatu software dan saya menyadari betapa krusialnya komponen-komponen tersebut dalam terbentuknya suatu software kompleks. Database, yang menjadi challenge pada tugas kali ini, saya memilih Hive untuk mengimplementasikannya ke program saya. Latar belakangnya yaitu saat saya menggunakan data object untuk men-store variable ke dalam suatu object, hal tu berhasil namun masih membuat saya belum puas. Karena saat program di-restart, variable yang "di-titipkan" ke objek akan hilang. Akhirnya saya belajar tentang Hive ini, sampai bagaimana menyimpan suatu data bertipe object buatan, bukan primitif. Tentunya kreativitas dari suatu program tidak lengkap tanpa suatu fitur. Maka dari itu Todo App buatan saya dilengkapi dengan perhitungan waktu hari ini dengan waktu task berakhir dengan bantuan DateFormat dari intl, filter Task untuk membedakan priority task, dan editable profile page. Secara keseluruhan, proses ini telah memperkaya pengetahuan dan keterampilan saya dalam pengembangan perangkat lunak mobile.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+library yang saya gunakan:
+Hive
+intl
+flutter_launcher_icons
+flutter_slidable
+path_provider

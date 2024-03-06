@@ -110,7 +110,7 @@ class _TaskPageState extends State<TaskPage> {
                         startTime == null
                             ? 'Choose date'
                             : DateFormat('EEE d MMM, yyyy').format(startTime!),
-                        style: TextStyle(fontFamily: 'Anta'),
+                        style: const TextStyle(fontFamily: 'Anta'),
                       ),
                     ),
                   ),
@@ -129,7 +129,7 @@ class _TaskPageState extends State<TaskPage> {
                         endTime == null
                             ? 'Choose date'
                             : DateFormat('EEE d MMM, yyyy').format(endTime!),
-                        style: TextStyle(fontFamily: 'Anta'),
+                        style: const TextStyle(fontFamily: 'Anta'),
                       ),
                     ),
                   ),
@@ -213,8 +213,7 @@ class _TaskPageState extends State<TaskPage> {
             Expanded(
               child: CupertinoTextField(
                   textAlignVertical: TextAlignVertical.top,
-                  scrollPadding: EdgeInsets.only(bottom: 40),
-                  autofocus: true,
+                  scrollPadding: const EdgeInsets.only(bottom: 40),
                   onChanged: (value) {
                     newDesc = value;
                   },
@@ -233,15 +232,15 @@ class _TaskPageState extends State<TaskPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Date invalid"),
+                          title: const Text("Date invalid"),
                           content:
-                              Text("Please choose start date and end date"),
+                              const Text("Please choose start date and end date"),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop(); // Tutup dialog
                               },
-                              child: Text("OK"),
+                              child: const Text("OK"),
                             ),
                           ],
                         );
@@ -253,15 +252,15 @@ class _TaskPageState extends State<TaskPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Date invalid"),
-                          content: Text(
+                          title: const Text("Date invalid"),
+                          content: const Text(
                               "End date cannot be the day before today or the start date"),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop(); // Tutup dialog
                               },
-                              child: Text("OK"),
+                              child: const Text("OK"),
                             ),
                           ],
                         );
@@ -272,14 +271,14 @@ class _TaskPageState extends State<TaskPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Task title input invalid"),
-                          content: Text("Please input the task title"),
+                          title: const Text("Task title input invalid"),
+                          content: const Text("Please input the task title"),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop(); // Tutup dialog
                               },
-                              child: Text("OK"),
+                              child: const Text("OK"),
                             ),
                           ],
                         );

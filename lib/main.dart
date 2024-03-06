@@ -1,4 +1,3 @@
-// import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import 'add_task_page.dart';
 import 'edit_page.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'datatodo.dart';
-// import 'package:flutter_learn_the_basics/datatodo.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
@@ -17,13 +15,8 @@ void main() async {
   Hive.init(directory.path);
   Hive.registerAdapter(DataToDoAdapter());
 
-  var box = await Hive.openBox('userDataBase');
-  var boxP = await Hive.openBox('profileDataBase');
-
-  // box1.deleteFromDisk();
-  // box2.deleteFromDisk();
-
-  // int nextIndex = box.values.length;
+  await Hive.openBox('userDataBase');
+  await Hive.openBox('profileDataBase');
 
   runApp(MyApp());
 }
@@ -45,10 +38,12 @@ class TodoListScreen extends StatefulWidget {
 
 class _TodoListScreenState extends State<TodoListScreen> {
   int currentIndex = 0;
+  bool priorityOnly = false;
   final _myBox = Hive.box('userDataBase');
   final _myProfileBox = Hive.box('profileDataBase');
   int getDayRemaining(int index) {
-    return _myBox.getAt(index).endDate.difference(DateTime.now()).inDays;
+    return (_myBox.getAt(index).endDate.difference(DateTime.now()).inHours / 24)
+        .ceil();
   }
 
   @override
@@ -102,7 +97,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 children: [
                   Text(
                     "Welcome, ${_myProfileBox.get('userName') == "" ? "User" : _myProfileBox.get('userName') ?? "User"}!",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'Anta',
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
@@ -117,31 +112,65 @@ class _TodoListScreenState extends State<TodoListScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "Daily Task",
+                        "My Task",
                         style: TextStyle(
                           fontFamily: 'Anta',
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontSize: 17,
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => TaskPage(
-                                onTaskAdded: () {
-                                  setState(() {});
-                                },
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            height: 35,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          priorityOnly
+                                              ? Colors.white
+                                              : Colors.purple.shade300)),
+                              onPressed: () {
+                                setState(() {
+                                  priorityOnly = !priorityOnly;
+                                });
+                              },
+                              child: Text(
+                                priorityOnly ? "View all" : "Priority only",
+                                style: TextStyle(
+                                  color: priorityOnly
+                                      ? Colors.purple.shade300
+                                      : Colors.white,
+                                  fontFamily: 'Anta',
+                                ),
                               ),
                             ),
-                          );
-                        },
-                        child: const Text(
-                          "Add Task",
-                          style: TextStyle(
-                            fontFamily: 'Anta',
                           ),
-                        ),
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            height: 35,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) => TaskPage(
+                                      onTaskAdded: () {
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                "Add task",
+                                style: TextStyle(
+                                  fontFamily: 'Anta',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -149,9 +178,13 @@ class _TodoListScreenState extends State<TodoListScreen> {
                     child: ListView.builder(
                       itemCount: _myBox.length,
                       itemBuilder: (context, index) {
+                        final task = _myBox.getAt(index) as DataToDo;
+                        if (priorityOnly && !task.isPriority) {
+                          return const SizedBox();
+                        }
                         return Slidable(
                           endActionPane: ActionPane(
-                            motion: StretchMotion(),
+                            motion: const StretchMotion(),
                             children: [
                               SlidableAction(
                                 onPressed: (context) {
@@ -159,7 +192,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                     _myBox.deleteAt(index);
                                   });
                                 },
-                                borderRadius: BorderRadius.only(
+                                borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(20),
                                     bottomLeft: Radius.circular(20)),
                                 icon: Icons.delete,
@@ -184,7 +217,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                       width: 0), // Set border color and width
                             ),
                             elevation: 4,
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 16),
                             child: InkWell(
                               onTap: () async {
@@ -217,10 +250,14 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                 ),
                                 subtitle: Text(getDayRemaining(index) == 0
                                     ? "Final day!"
-                                    : "${getDayRemaining(index)} day(s) remaining"),
+                                    : getDayRemaining(index) < 0
+                                        ? "Task has ended"
+                                        : "${getDayRemaining(index)} day(s) remaining"),
                                 textColor: getDayRemaining(index) == 0
                                     ? Colors.red
-                                    : Colors.black,
+                                    : getDayRemaining(index) < 0
+                                        ? Colors.green
+                                        : Colors.black,
                                 trailing: Wrap(
                                   spacing: 3, // space between two icons
                                   children: <Widget>[
@@ -247,21 +284,22 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 ],
               ),
             )
-          : ProfilePage(),
+          : const ProfilePage(),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
             label: "Home",
             icon: Icon(
               Icons.home_filled,
-              color: Colors.lightBlue,
               size: 24.0,
-              semanticLabel: "To play a music",
             ),
           ),
           BottomNavigationBarItem(
             label: "Profile",
-            icon: Icon(Icons.account_box),
+            icon: Icon(
+              Icons.account_box,
+              size: 24.0,
+            ),
           ),
         ],
         currentIndex: currentIndex,
