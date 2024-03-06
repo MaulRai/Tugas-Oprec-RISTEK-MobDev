@@ -125,6 +125,78 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Expanded(
+                      child: Text("Nickname", style: TextStyle(fontFamily: 'Anta'))),
+                ],
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.0),
+                  color: Colors.white
+                      .withOpacity(0.5), // Background color with 50% opacity
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  child: TextFormField(
+                    initialValue: _myProfileBox.get('nickName') ?? "",
+                    onChanged: (value) {
+                      _myProfileBox.put("nickName", value);
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                      child: Text("Hobbies", style: TextStyle(fontFamily: 'Anta'))),
+                ],
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.0),
+                  color: Colors.white
+                      .withOpacity(0.5), // Background color with 50% opacity
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  child: TextFormField(
+                    initialValue: _myProfileBox.get('hobbies') ?? "",
+                    onChanged: (value) {
+                      _myProfileBox.put("hobbies", value);
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                      child: Text("Social Media", style: TextStyle(fontFamily: 'Anta'))),
+                ],
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.0),
+                  color: Colors.white
+                      .withOpacity(0.5), // Background color with 50% opacity
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  child: TextFormField(
+                    initialValue: _myProfileBox.get('socialMedia') ?? "",
+                    onChanged: (value) {
+                      _myProfileBox.put("socialMedia", value);
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
                       child: Text("Major", style: TextStyle(fontFamily: 'Anta'))),
                 ],
               ),
@@ -191,7 +263,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 200),
+              // const SizedBox(height: 200),
             ],
           ),
         ),

@@ -96,7 +96,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
               child: Column(
                 children: [
                   Text(
-                    "Welcome, ${_myProfileBox.get('userName') == "" ? "User" : _myProfileBox.get('userName') ?? "User"}!",
+                    "Welcome, ${_myProfileBox.get('nickName') == "" ? "User" : _myProfileBox.get('nickName') ?? "User"}!",
                     style: const TextStyle(
                       fontFamily: 'Anta',
                       fontWeight: FontWeight.bold,
